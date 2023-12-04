@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Login Page</title>
+    <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .login-container button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .login-container button:hover {
+            background-color: #45a049;
+        }* Your CSS styles go here */
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Login</h2>
+    <form id="loginForm" onsubmit="return validateForm()" action="/login" method="post">
+        <input type="text" name="username" placeholder="Username" required>
+        <br>
+        <input type="password" name="password" id="password" placeholder="Password" required>
+        <span id="passwordStrength"></span>
+        <br>
+        <button type="submit">Login</button>
+    </form>
+</div>
+
+<script>
+    function validateForm() {
+        // Perform additional validation if needed
+        // For example, you can check if the password meets server-side criteria before submitting the form
+        return true;
+    }
+
+    // Password strength check
+    document.getElementById('password').addEventListener('input', function () {
+        var password = this.value;
+        var strengthBadge = document.getElementById('passwordStrength');
+        var strength = 0;
+
+        // If the password length is less than 6, set strength to 0
+        if (password.length < 6) {
+            strengthBadge.style.backgroundColor = "#dc3545";
+            strengthBadge.textContent = 'Weak';
+        } else {
+            // Increment strength for each criteria met
+            strength += /[A-Z]/.test(password) ? 1 : 0;
+            strength += /[a-z]/.test(password) ? 1 : 0;
+            strength += /[0-9]/.test(password) ? 1 : 0;
+            strength += /[$&+,:;=?@#|'<>.^*()%!-]/.test(password) ? 1 : 0;
+
+            // Set the strength color and text based on the calculated strength
+            if (strength <= 2) {
+                strengthBadge.style.backgroundColor = "#ffc107";
+                strengthBadge.textContent = 'Moderate';
+            } else {
+                strengthBadge.style.backgroundColor = "#28a745";
+                strengthBadge.textContent = 'Strong';
+            }
+        }
+    });
+
+    // Redirect on form submission
+    document.getElementById('loginForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        if (validateForm()) {
+            // Redirect to the next page
+            window.location.href = "home.html";
+        }
+    });
+</script>
+
+</body>
+</html>
